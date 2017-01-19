@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal" >
@@ -16,10 +17,36 @@
         android:minWidth="64dp"
         android:layout_margin="10dp" />
 
-    <TextView
-        android:text="Sale"
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView"
-        android:layout_margin="10dp" />
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:text="Product name "
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/productName"
+            android:textStyle="normal|bold"
+            android:textSize="18sp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <TextView
+                android:text="100€"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/productPrice"
+                android:layout_weight="1"
+                android:textColor="@color/colorAccent"
+                android:textSize="24sp"
+                android:layout_marginRight="20dp" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
 </LinearLayout>

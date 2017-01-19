@@ -1,9 +1,7 @@
 package com.example.karlmartin.herashop;
 
 import android.content.Intent;
-import android.os.AsyncTask;
-import android.os.Handler;
-import android.os.Looper;
+import android.net.http.HttpResponseCache;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,23 +10,13 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLConnection;
+import java.io.File;
 
 public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
@@ -38,15 +26,23 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shop_map);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+
+        try{
+            File httpCacheDir = new File(getCacheDir(), "http");
+            long httpCahceSize = 10 * 1024 * 1024; // 10MB
+            HttpResponseCache.install(httpCacheDir, httpCahceSize);
+        } catch (Exception e) {
+            Log.e("ShopMapActivity", "Error creating http cache " + e.toString());
+        }
+
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
 
     private void addShops() {
-        ServerConnection serverConnection = new ServerConnection(mMap);
-        serverConnection.execute(mMap);
+        ShopMapActivityFiller shopMapActivityFiller = new ShopMapActivityFiller(mMap);
+        shopMapActivityFiller.execute();
     }
 
     /**
@@ -65,14 +61,17 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Add a marker in Sydney and move the camera
         LatLng tallinn = new LatLng(59.437222, 24.745278);
-        LatLng eesti = new LatLng(59.437222, 24.745278);
-        LatLng shop = new LatLng(59.437222, 24.743000);
+        LatLng rademar = new LatLng(59.434222, 24.747278);
+        LatLng sportland = new LatLng(59.439222, 24.743000);
 
-        mMap.addMarker(new MarkerOptions().position(eesti).title("Eesti"));
         mMap.addMarker(new MarkerOptions()
-                .position(shop).title("Pood")
-                .snippet("Testsnip")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.test)));
+                .position(rademar)
+                .title("Rademar")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rademar)));
+        mMap.addMarker(new MarkerOptions()
+                .position(sportland)
+                .title("Sportland")
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.sportland)));
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(tallinn)
