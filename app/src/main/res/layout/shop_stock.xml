@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@color/colorPrimaryDark"
+        android:id="@+id/imageView"
+        android:adjustViewBounds="false"
+        android:scaleType="center"
+        android:minHeight="64dp"
+        android:minWidth="64dp"
+        android:layout_margin="10dp" />
+
+    <TextView
+        android:text="Sale"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView"
+        android:layout_margin="10dp" />
+</LinearLayout>
