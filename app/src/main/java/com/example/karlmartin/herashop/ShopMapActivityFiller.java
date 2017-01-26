@@ -38,24 +38,24 @@ public class ShopMapActivityFiller extends AsyncTask<Void, Void, Shop[]> {
         JSONRequest request = new JSONRequest();
 
         try{
-            JSONObject jsonReader = new JSONObject(request.getJSON("shops.json"));
-            JSONArray jsonArray = jsonReader.getJSONArray("array");
+            JSONArray jsonArray = new JSONArray(request.getJSON("shopsnew.json"));
 
             Shop shops[] = new Shop[jsonArray.length()];
 
             for(int i = 0; i < jsonArray.length(); i++) {
-                JSONObject shop = jsonArray.getJSONObject(i);
+                JSONObject djangoObject = jsonArray.getJSONObject(i);
+                JSONObject shop = djangoObject.getJSONObject("fields");
 
                 String shopName = shop.getString("name");
                 double lat = shop.getDouble("lat");
                 double lng = shop.getDouble("lng");
+                String iconPath = shop.getString("icon");
 
                 ImageRequest imageRequest = new ImageRequest();
-                Bitmap image = imageRequest.getImage(shop.getString("img"));
+                Bitmap image = imageRequest.getImage(iconPath);
                 Bitmap bigImage = Bitmap.createScaledBitmap(image, 150, 150, false);
 
                 shops[i] = new Shop(shopName, bigImage, lat, lng);
-
             }
 
             return shops;

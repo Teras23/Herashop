@@ -61,7 +61,7 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         // Add a marker in Sydney and move the camera
         LatLng tallinn = new LatLng(59.437222, 24.745278);
-        LatLng rademar = new LatLng(59.434222, 24.747278);
+        /*LatLng rademar = new LatLng(59.434222, 24.747278);
         LatLng sportland = new LatLng(59.439222, 24.743000);
 
         mMap.addMarker(new MarkerOptions()
@@ -71,7 +71,7 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
         mMap.addMarker(new MarkerOptions()
                 .position(sportland)
                 .title("Sportland")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.sportland)));
+                .icon(BitmapDescriptorFactory.fromResource(R.drawable.sportland)));*/
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(tallinn)
