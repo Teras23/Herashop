@@ -2,25 +2,27 @@ package com.example.karlmartin.herashop;
 
 import android.content.Intent;
 import android.net.http.HttpResponseCache;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.File;
 
-public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+public class ShopMapActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,8 +31,8 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
 
         try{
             File httpCacheDir = new File(getCacheDir(), "http");
-            long httpCahceSize = 10 * 1024 * 1024; // 10MB
-            HttpResponseCache.install(httpCacheDir, httpCahceSize);
+            long httpCacheSize = 10 * 1024 * 1024; // 10MB
+            HttpResponseCache.install(httpCacheDir, httpCacheSize);
         } catch (Exception e) {
             Log.e("ShopMapActivity", "Error creating http cache " + e.toString());
         }
@@ -38,11 +40,14 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void addShops() {
-        ShopMapActivityFiller shopMapActivityFiller = new ShopMapActivityFiller(mMap);
-        shopMapActivityFiller.execute();
+        ShopMapFiller shopMapFiller = new ShopMapFiller(mMap);
+        shopMapFiller.execute();
     }
 
     /**
@@ -59,19 +64,7 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
         googleMap.setOnMarkerClickListener(this);
         mMap = googleMap;
 
-        // Add a marker in Sydney and move the camera
         LatLng tallinn = new LatLng(59.437222, 24.745278);
-        /*LatLng rademar = new LatLng(59.434222, 24.747278);
-        LatLng sportland = new LatLng(59.439222, 24.743000);
-
-        mMap.addMarker(new MarkerOptions()
-                .position(rademar)
-                .title("Rademar")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.rademar)));
-        mMap.addMarker(new MarkerOptions()
-                .position(sportland)
-                .title("Sportland")
-                .icon(BitmapDescriptorFactory.fromResource(R.drawable.sportland)));*/
 
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(tallinn)
@@ -89,8 +82,28 @@ public class ShopMapActivity extends FragmentActivity implements OnMapReadyCallb
     public boolean onMarkerClick(final Marker marker) {
         Intent intent = new Intent(this, ShopStockActivity.class);
         intent.putExtra("shopName", marker.getTitle());
+        intent.putExtra("shopClass", (Shop)marker.getTag());
         startActivity(intent);
 
         return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        int id = item.getItemId();
+
+        if(id == R.id.action_refresh) {
+            mMap.clear();
+            addShops();
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

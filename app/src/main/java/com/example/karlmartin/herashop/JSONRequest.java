@@ -22,6 +22,8 @@ public class JSONRequest {
         try {
             url = new URL("http://testing.eucolus.com/" + path);
 
+            Log.i("JSONRequest", "JSON Request to: " + url.toString());
+
             urlConnection = (HttpURLConnection) url.openConnection();
             urlConnection.addRequestProperty("Cache-Control", "no-cache");
             InputStream in = urlConnection.getInputStream();

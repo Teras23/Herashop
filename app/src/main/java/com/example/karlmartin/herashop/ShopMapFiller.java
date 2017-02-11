@@ -23,22 +23,22 @@ import java.net.URL;
  * Created by KarlMartin on 2017-01-19.
  */
 
-public class ShopMapActivityFiller extends AsyncTask<Void, Void, Shop[]> {
+public class ShopMapFiller extends AsyncTask<Void, Void, Shop[]> {
 
     private GoogleMap mMap;
 
-    public ShopMapActivityFiller(GoogleMap mMap) {
+    public ShopMapFiller(GoogleMap mMap) {
         this.mMap = mMap;
     }
 
     @Override
     protected Shop[] doInBackground(Void[] params) {
-        Log.i("ShopMapActivityFiller", "Reading JSON");
+        Log.i("ShopMapFiller", "Reading JSON");
 
         JSONRequest request = new JSONRequest();
 
         try{
-            JSONArray jsonArray = new JSONArray(request.getJSON("shopsnew.json"));
+            JSONArray jsonArray = new JSONArray(request.getJSON("stores/"));
 
             Shop shops[] = new Shop[jsonArray.length()];
 
@@ -46,21 +46,25 @@ public class ShopMapActivityFiller extends AsyncTask<Void, Void, Shop[]> {
                 JSONObject djangoObject = jsonArray.getJSONObject(i);
                 JSONObject shop = djangoObject.getJSONObject("fields");
 
+                int id = djangoObject.getInt("pk");
+
                 String shopName = shop.getString("name");
                 double lat = shop.getDouble("lat");
                 double lng = shop.getDouble("lng");
                 String iconPath = shop.getString("icon");
+                JSONArray typeIdArray = shop.getJSONArray("type");
+                int typeId = typeIdArray.getInt(0);
 
                 ImageRequest imageRequest = new ImageRequest();
-                Bitmap image = imageRequest.getImage(iconPath);
+                Bitmap image = imageRequest.getImage("static/" + "rademar.png"); //TODO: GET RID OF STATIC URL
                 Bitmap bigImage = Bitmap.createScaledBitmap(image, 150, 150, false);
 
-                shops[i] = new Shop(shopName, bigImage, lat, lng);
+                shops[i] = new Shop(id, typeId, shopName, bigImage, lat, lng);
             }
 
             return shops;
         } catch (Exception e) {
-            Log.e("ShopMapActivityFiller", "Error reading JSON " + e.toString());
+            Log.e("ShopMapFiller", "Error reading JSON " + e.toString());
         }
 
         return null;
@@ -73,8 +77,9 @@ public class ShopMapActivityFiller extends AsyncTask<Void, Void, Shop[]> {
                 mMap.addMarker(new MarkerOptions()
                         .position(new LatLng(shop.lat, shop.lon))
                         .title(shop.shopName)
-                        .icon(BitmapDescriptorFactory.fromBitmap(shop.icon)));
-                Log.i("ShopMapActivityFiller", shop.shopName + " " + shop.lat + " " + shop.lon);
+                        .icon(BitmapDescriptorFactory.fromBitmap(shop.icon)))
+                        .setTag(shop);
+                Log.i("ShopMapFiller", shop.shopName + " " + shop.lat + " " + shop.lon);
             }
         }
     }
