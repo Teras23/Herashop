@@ -30,9 +30,6 @@ public class ShopStockActivity extends AppCompatActivity implements View.OnClick
 
         shop = bundle.getParcelable("shopClass");
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
         getStock();
     }
 
@@ -65,6 +62,9 @@ public class ShopStockActivity extends AppCompatActivity implements View.OnClick
         }
 
         setContentView(parent);
+
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
     }
 
     private void getStock() {

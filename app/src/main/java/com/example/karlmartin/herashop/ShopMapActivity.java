@@ -34,7 +34,7 @@ public class ShopMapActivity extends AppCompatActivity implements OnMapReadyCall
             long httpCacheSize = 10 * 1024 * 1024; // 10MB
             HttpResponseCache.install(httpCacheDir, httpCacheSize);
         } catch (Exception e) {
-            Log.e("ShopMapActivity", "Error creating http cache " + e.toString());
+            Log.e("ShopMapActivity", "Error creating http cache:\n" + e.toString());
         }
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()

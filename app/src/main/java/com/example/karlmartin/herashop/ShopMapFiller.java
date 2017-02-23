@@ -38,7 +38,8 @@ public class ShopMapFiller extends AsyncTask<Void, Void, Shop[]> {
         JSONRequest request = new JSONRequest();
 
         try{
-            JSONArray jsonArray = new JSONArray(request.getJSON("stores/"));
+            JSONArray jsonArray = new JSONArray(request.getJSON("/stores/"));
+            JSONArray storeTypeJsonArray = new JSONArray(request.getJSON("/storetype/"));
 
             Shop shops[] = new Shop[jsonArray.length()];
 
@@ -51,12 +52,15 @@ public class ShopMapFiller extends AsyncTask<Void, Void, Shop[]> {
                 String shopName = shop.getString("name");
                 double lat = shop.getDouble("lat");
                 double lng = shop.getDouble("lng");
-                String iconPath = shop.getString("icon");
                 JSONArray typeIdArray = shop.getJSONArray("type");
                 int typeId = typeIdArray.getInt(0);
 
+                //Object from manytoomany shop type json
+                JSONObject djangoStoreTypeObject = storeTypeJsonArray.getJSONObject(typeId - 1);
+                String iconPath = djangoStoreTypeObject.getJSONObject("fields").getString("icon");
+
                 ImageRequest imageRequest = new ImageRequest();
-                Bitmap image = imageRequest.getImage("static/" + "rademar.png"); //TODO: GET RID OF STATIC URL
+                Bitmap image = imageRequest.getImage("/icon/" + iconPath + "/");
                 Bitmap bigImage = Bitmap.createScaledBitmap(image, 150, 150, false);
 
                 shops[i] = new Shop(id, typeId, shopName, bigImage, lat, lng);
@@ -64,7 +68,7 @@ public class ShopMapFiller extends AsyncTask<Void, Void, Shop[]> {
 
             return shops;
         } catch (Exception e) {
-            Log.e("ShopMapFiller", "Error reading JSON " + e.toString());
+            Log.e("ShopMapFiller", "Error reading JSON:\n" + e.toString());
         }
 
         return null;

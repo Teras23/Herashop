@@ -15,13 +15,12 @@ import java.net.URL;
 public class JSONRequest {
     public String getJSON(String path) {
         URL url;
-        HttpURLConnection urlConnection = null;
+        HttpURLConnection urlConnection;
 
         StringBuilder data = new StringBuilder();
 
         try {
-            url = new URL("http://testing.eucolus.com/" + path);
-
+            url = new URL(Url.serverUrl + path);
             Log.i("JSONRequest", "JSON Request to: " + url.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
@@ -37,7 +36,7 @@ public class JSONRequest {
 
             urlConnection.disconnect();
         } catch(Exception e) {
-            Log.e("JSONRequest", "Error getting data from server " + e.toString());
+            Log.e("JSONRequest", "Error getting json from server:\n" + e.toString());
         }
 
         return data.toString();

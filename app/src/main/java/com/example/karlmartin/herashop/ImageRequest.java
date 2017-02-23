@@ -17,10 +17,10 @@ import java.net.URL;
 public class ImageRequest {
     public Bitmap getImage(String path) {
         URL url;
-        HttpURLConnection urlConnection = null;
+        HttpURLConnection urlConnection;
 
         try {
-            url = new URL("http://testing.eucolus.com/" + path);
+            url = new URL(Url.serverUrl + path);
 
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = urlConnection.getInputStream();
@@ -30,7 +30,7 @@ public class ImageRequest {
             urlConnection.disconnect();
             return image;
         } catch(Exception e) {
-            Log.e("ImageRequest", "Error getting data from server " + e.toString());
+            Log.e("ImageRequest", "Error getting image from server:\n" + e.toString());
         }
         return null;
     }

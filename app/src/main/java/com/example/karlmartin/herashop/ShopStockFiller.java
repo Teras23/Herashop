@@ -32,9 +32,9 @@ public class ShopStockFiller extends AsyncTask<Void, Void, Stock[]> {
         JSONRequest request = new JSONRequest();
 
         try{
-            JSONArray jsonArray = new JSONArray(request.getJSON("stock/" + shop.typeId + "/" + shop.id + "/"));
+            JSONArray jsonArray = new JSONArray(request.getJSON("/stock/" + shop.typeId + "/" + shop.id + "/"));
 
-            Log.e("ShopStockFiller", jsonArray.toString());
+            Log.i("ShopStockFiller", jsonArray.toString());
 
             Stock items[] = new Stock[jsonArray.length()];
 
