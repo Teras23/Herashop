@@ -4,48 +4,59 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal" >
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@color/colorPrimaryDark"
-        android:id="@+id/imageView"
-        android:adjustViewBounds="false"
-        android:scaleType="center"
-        android:minHeight="64dp"
-        android:minWidth="64dp"
-        android:layout_margin="10dp" />
+    android:orientation="vertical">
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="10dp">
+        android:layout_margin="5dp">
 
-        <TextView
-            android:text="Product name "
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/productName"
-            android:textStyle="normal|bold"
-            android:textSize="18sp" />
+            app:srcCompat="@color/colorPrimaryDark"
+            android:id="@+id/productImage"
+            android:adjustViewBounds="false"
+            android:scaleType="center"
+            android:minHeight="200dp"
+            android:layout_margin="10dp"
+            android:layout_weight="1" />
 
-        <RelativeLayout
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="right">
+            android:layout_margin="10dp"
+            android:background="@color/productBackground"
+            android:padding="10dp"
+            android:layout_weight="1">
 
             <TextView
-                android:text="100€"
-                android:layout_width="wrap_content"
+                android:text="Product name "
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/productPrice"
-                android:layout_weight="1"
-                android:textColor="@color/colorAccent"
-                android:textSize="24sp"
-                android:layout_marginRight="20dp" />
-        </RelativeLayout>
+                android:id="@+id/productName"
+                android:textStyle="normal|bold"
+                android:textSize="18sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="right">
+
+                <TextView
+                    android:text="100€"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/productPrice"
+                    android:layout_weight="1"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="24sp"
+                    android:layout_marginRight="20dp" />
+            </RelativeLayout>
+
+        </LinearLayout>
 
     </LinearLayout>
 

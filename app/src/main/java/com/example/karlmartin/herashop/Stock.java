@@ -21,6 +21,5 @@ public class Stock {
         this.price = p;
         this.discount = d;
         this.discountPrice = dp;
-
     }
 }

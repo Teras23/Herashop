@@ -21,6 +21,7 @@ public class ImageRequest {
 
         try {
             url = new URL(Url.serverUrl + path);
+            Log.i("ImageRequest", "Image Request to: " + url.toString());
 
             urlConnection = (HttpURLConnection) url.openConnection();
             InputStream in = urlConnection.getInputStream();

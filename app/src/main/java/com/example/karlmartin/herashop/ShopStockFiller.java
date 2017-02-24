@@ -43,13 +43,16 @@ public class ShopStockFiller extends AsyncTask<Void, Void, Stock[]> {
                 JSONObject stockData = djangoObject.getJSONObject("fields");
 
                 String name = stockData.getString("name");
-                String iconPath = stockData.getString("icon");
+                int imageId = stockData.getInt("image");
                 String description = stockData.getString("description");
                 double price = stockData.getDouble("price");
                 double discount = stockData.getDouble("discount");
                 double discountPrice = stockData.getDouble("discountPrice");
 
-                items[i] = new Stock(name, null, description, price, discount, discountPrice);
+                ImageRequest imageRequest = new ImageRequest();
+                Bitmap image = imageRequest.getImage("/imageId/" + imageId + "/");
+
+                items[i] = new Stock(name, image, description, price, discount, discountPrice);
             }
 
             return items;

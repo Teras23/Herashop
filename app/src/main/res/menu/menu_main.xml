@@ -9,7 +9,9 @@
     android:icon="@drawable/ic_search_black_24dp"
     android:title="Search"
     android:orderInCategory="1"
-    app:showAsAction="always"/>
+    app:showAsAction="always"
+        android:visible="false"
+        android:enabled="false" />
 
     <item
     android:id="@+id/action_refresh"
@@ -23,5 +25,6 @@
     android:icon="@drawable/ic_search_black_24dp"
     android:title="Options"
     android:orderInCategory="1"
-    app:showAsAction="never"/>
+    app:showAsAction="never"
+        android:visible="false" />
 </menu>

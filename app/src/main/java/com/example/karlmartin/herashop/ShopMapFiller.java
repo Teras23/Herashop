@@ -52,8 +52,7 @@ public class ShopMapFiller extends AsyncTask<Void, Void, Shop[]> {
                 String shopName = shop.getString("name");
                 double lat = shop.getDouble("lat");
                 double lng = shop.getDouble("lng");
-                JSONArray typeIdArray = shop.getJSONArray("type");
-                int typeId = typeIdArray.getInt(0);
+                int typeId = shop.getInt("type");
 
                 //Object from manytoomany shop type json
                 JSONObject djangoStoreTypeObject = storeTypeJsonArray.getJSONObject(typeId - 1);

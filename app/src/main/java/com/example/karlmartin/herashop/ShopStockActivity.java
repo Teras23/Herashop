@@ -1,6 +1,8 @@
 package com.example.karlmartin.herashop;
 
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.icu.text.DecimalFormat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,11 +13,15 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.google.android.gms.vision.text.Line;
+
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 
 public class ShopStockActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -50,6 +56,9 @@ public class ShopStockActivity extends AppCompatActivity implements View.OnClick
 
                 TextView priceView = (TextView)view.findViewById(R.id.productPrice);
                 priceView.setText(String.valueOf(stock.price) + "€");
+
+                ImageView imageView = (ImageView)view.findViewById(R.id.productImage);
+                imageView.setImageBitmap(stock.icon);
 
                 view.setOnClickListener(this);
                 scrollLinearLayout.addView(view);
@@ -92,7 +101,26 @@ public class ShopStockActivity extends AppCompatActivity implements View.OnClick
 
     @Override
     public void onClick(View view) {
-        Stock s = (Stock)view.getTag();
-        Log.e("ShopStockActivity", "click on " + s.itemName);
+        Stock stock = (Stock)view.getTag();
+        Log.e("ShopStockActivity", "click on " + stock.itemName);
+
+        Intent intent = new Intent(this, ProductActivity.class);
+
+        intent.putExtra("productName", stock.itemName);
+        intent.putExtra("productDescription", stock.description);
+        intent.putExtra("productPrice", stock.price);
+
+        //Saving the image to a temp file so it does not need to be requested from the server again
+        try {
+            ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+            stock.icon.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+            FileOutputStream fo = openFileOutput("tempImage", Context.MODE_PRIVATE);
+            fo.write(bytes.toByteArray());
+            fo.close();
+        } catch (Exception e) {
+            Log.e("ShopStockActivity", "Error saving file " + e.toString());
+        }
+
+        startActivity(intent);
     }
 }
